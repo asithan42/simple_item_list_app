@@ -38,5 +38,21 @@ This is a basic Flutter application using Provider state management.
             <pre><code>flutter run</code></pre>
         </li>
     </ol>
+<h2>UI Screenshots</h2>
+<div style="display: flex; justify-content: space-around;">
+    <div style="text-align: center;">
+        <h3>Home Screen</h3>
+        <img src="https://github.com/asithan42/simple_item_list_app/assets/89180676/9a7be281-d878-4a1e-baee-35625da7185e" alt="Home screen" style="height: 450px; width: 300px;">
+    </div>
+    <div style="text-align: center;">
+        <h3>Add Item Screen</h3>
+        <img src="https://github.com/asithan42/simple_item_list_app/assets/89180676/fa0203f4-b420-4f96-a0ef-a5b07cab7313" alt="Item add screen" style="height: 450px; width: 300px;;">
+    </div>
+    <div style="text-align: center;">
+        <h3>Details View Screen</h3>
+        <img src="https://github.com/asithan42/simple_item_list_app/assets/89180676/bde7f1ab-52b9-45a2-a8d5-b6ab1fd1ba8d" alt="Details view screen" style="height: 450px; width: 300px;">
+    </div>
+</div>
 
+    
 <h2>Thank You!</h2>
