@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_app/constant/colors.dart';
 import 'package:simple_app/models/item.dart';
+import 'package:simple_app/screens/profile_screen.dart';
 
 import '../providers/item_provider.dart';
 import 'add_item_screen.dart';
 import 'detail_screen.dart';
 
-// Define a stateless widget called HomeScreen
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -19,90 +27,183 @@ class HomeScreen extends StatelessWidget {
           'MY ITEMS',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 40,
+            fontSize: 20,
             color: textColor,
+            fontFamily:"Merriweather",
           ),
         ),
         centerTitle: true,
         backgroundColor: secondaryColor,
-        leading: const Icon(
-          Icons.menu,
-          size: 45,
+        leading: IconButton(
+            onPressed: () {
+              //function for menu items
+            },
+            icon: const Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Icon(Icons.menu,size: 30,),
+            )
+            ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60.0),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search Items',
+                prefixIcon: const Icon(Icons.search, color: textColor),
+                filled: true,
+                fillColor: backgroundColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.toLowerCase();
+                });
+              },
+            ),
+          ),
         ),
-      ),
-
-      // Consumer widget listens to changes in the ItemProvider
-      body: Consumer<ItemProvider>(
-        builder: (context, itemProvider, child) {
-          return ListView.builder(
-            itemCount: itemProvider.items.length, // Number of items in the list
-            itemBuilder: (context, index) {
-              final item = itemProvider.items[index];
-              return ListTile(
-                title: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: primaryColor,
-                  ),
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                           "${++index}. ${item.title}", // show item title with index counter number in home screen.
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: textColor,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: textColor),
-                        onPressed: () {
-                          _showDeleteConfirmationDialog(context, itemProvider,
-                              item); // Show delete confirmation method call.
-                        },
-                      ),
-                    ],
+        actions: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const ProfileScreen()), // Navigate to AddItemScreen
+                    );
+                  },
+                  child: const CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage('assest/images/profilePic.png'),
                   ),
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailScreen(item: item),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: Consumer<ItemProvider>(
+         // This widget listens to changes in the ItemProvider and rebuilds when data changes
+        builder: (context, itemProvider, child) {
+          final filteredItems = itemProvider.items
+              .where((item) => item.title.toLowerCase().contains(_searchQuery))
+              .toList();
+        
+          return ListView.builder(
+            itemCount: filteredItems.length,
+            itemBuilder: (context, index) {
+              final item = filteredItems[index];
+              return Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Card(
+                  color: primaryColor,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 20),
+                    title: Text(
+                      "${index + 1}. ${item.title}", // Show item title with index counter number in home screen.
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: textColor,
+                        fontFamily: "Rubik",
+                      ),
                     ),
-                  );
-                },
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: textColor),
+                      onPressed: () {
+                        _showDeleteConfirmationDialog(context, itemProvider,
+                            item); // Show delete confirmation method call.
+                      },
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailScreen(item: item),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               );
             },
           );
         },
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: FloatingActionButton(
-            backgroundColor: secondaryColor,
-            elevation: 10,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddItemScreen()),
-                // Navigate to AddItemScreen
-              );
-            },
-            child: const Icon(
-              Icons.add,
-              size: 45,
-              color: textColor,
+      bottomNavigationBar: BottomAppBar(
+        elevation: 5,
+        color: secondaryColor,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 80),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.home,
+                  size: 40,
+                  color: textColor,
+                ),
+                onPressed: () {
+                  // Navigate to HomeScreen
+                },
+              ),
             ),
-          ),
+            IconButton(
+              icon: const Icon(
+                Icons.person,
+                size: 40,
+                color: textColor,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const ProfileScreen()), // Navigate to AddItemScreen
+                );
+              },
+            ),
+          ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: secondaryColor,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const AddItemScreen()), // Navigate to AddItemScreen
+          );
+        },
+        shape: const CircleBorder(),
+        child: const Icon(
+          Icons.add,
+          size: 50,
+          color: textColor,
+          
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      resizeToAvoidBottomInset: false,
     );
   }
 
@@ -133,5 +234,7 @@ class HomeScreen extends StatelessWidget {
         );
       },
     );
+
+    
   }
 }

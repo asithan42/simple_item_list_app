@@ -6,7 +6,7 @@ import 'screens/home_screen.dart';
 
 
 void main() {
-  runApp(const MyApp()); // This starts the app by calling the MyApp widget
+  runApp(const MyApp());
 }
 
 
@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ChangeNotifierProvider provides the ItemProvider to the widget tree
     return ChangeNotifierProvider(
       create: (context) => ItemProvider(), // Create an instance of ItemProvider
       child: MaterialApp(

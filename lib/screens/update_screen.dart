@@ -2,32 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_app/constant/colors.dart';
-import 'package:simple_app/screens/home_screen.dart';
+import 'package:simple_app/models/item.dart';
+import 'package:simple_app/providers/item_provider.dart';
 
-import '../providers/item_provider.dart';
+class UpdateItemScreen extends StatefulWidget {
+  final Item item; // Item to be updated
 
-// Stateful widget to add items
-class AddItemScreen extends StatefulWidget {
-  const AddItemScreen({super.key});
+  const UpdateItemScreen({super.key, required this.item});
 
   @override
   // ignore: library_private_types_in_public_api
-  _AddItemScreenState createState() => _AddItemScreenState();
+  _UpdateItemScreenState createState() => _UpdateItemScreenState();
 }
 
-class _AddItemScreenState extends State<AddItemScreen> {
+class _UpdateItemScreenState extends State<UpdateItemScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _title = ''; // Variable declare to store the title
-  String _description = ''; // Variable declare to store the description
+  late String _title; // Variable to hold the updated title
+  late String _description; // Variable to hold the updated description
+
+  @override
+  // Initialize the title and description with the current item's values
+  void initState() {
+    super.initState();
+    _title = widget.item.title;
+    _description = widget.item.description;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         backgroundColor: secondaryColor,
         title: const Text(
-          'ADD ITEM',
+          'UPDATE ITEM',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
@@ -43,8 +51,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
           child: Form(
             key: _formKey,
             child: Column(
+              //getting user input for edit the title and description. and let to edit exsisting values.
               children: [
                 TextFormField(
+                  initialValue: _title,
                   decoration: const InputDecoration(
                     labelText: 'Enter Title',
                     labelStyle: TextStyle(fontSize: 25),
@@ -59,13 +69,14 @@ class _AddItemScreenState extends State<AddItemScreen> {
                     return null;
                   },
                   onSaved: (value) {
-                    _title = value!; // Save the title
+                    _title = value!;
                   },
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 TextFormField(
+                  initialValue: _description,
                   decoration: const InputDecoration(
                     labelText: 'Enter Description',
                     labelStyle: TextStyle(
@@ -74,7 +85,6 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   ),
                   style: const TextStyle(fontSize: 15),
                   maxLines: 4,
-                  // maxLength: 100,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a description..'; // Validation message
@@ -85,7 +95,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                     return null;
                   },
                   onSaved: (value) {
-                    _description = value!; // Save the description
+                    _description = value!;
                   },
                 ),
                 const SizedBox(height: 50),
@@ -93,12 +103,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      // Add item to the provider
-                      Provider.of<ItemProvider>(context, listen: false).addItem(
-                        _title,
-                        _description,
-                      );
-                      Navigator.pop(context); // Go back to the home screen
+                      Provider.of<ItemProvider>(context, listen: false)
+                          .updateItem(widget.item.id, _title, _description);
+                      Navigator.pop(context, true); // Indicate success
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -106,41 +113,22 @@ class _AddItemScreenState extends State<AddItemScreen> {
                     backgroundColor: secondaryColor,
                   ),
                   child: const Text(
-                    'Add Item',
+                    'Update',
                     style: TextStyle(
                         color: textColor,
                         fontSize: 20,
-                        fontWeight: FontWeight.w400),
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                // Add animation image from lottie package
                 Lottie.asset(
-                  "assest/images/add_item.json",
-                  height: 250,
+                  "assest/images/loading.json",
+                  height: 400,
                 ),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: const BottomAppBar(
-        elevation: 5,
-        color: secondaryColor,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 8.0,
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: secondaryColor,
-        onPressed: () => Navigator.pop(context, (const HomeScreen())),
-        shape: const CircleBorder(),
-        child: const Icon(
-          Icons.home,
-          size: 50,
-          color: textColor,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      resizeToAvoidBottomInset: false,
     );
   }
 }

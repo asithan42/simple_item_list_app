@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/constant/colors.dart';
-import 'package:simple_app/screens/home_screen.dart';
+import 'package:simple_app/models/item.dart';
+import 'package:simple_app/providers/item_provider.dart';
+import 'package:simple_app/screens/update_screen.dart';
 
-import '../models/item.dart';
+class DetailScreen extends StatefulWidget {
+  final Item item;
 
-class DetailScreen extends StatelessWidget {
-  final Item item; // Item passed to this screen
+  const DetailScreen({super.key, required this.item});
 
-  const DetailScreen({super.key, required this.item}); // Constructor to receive the item
+  @override
+  // ignore: library_private_types_in_public_api
+  _DetailScreenState createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late Item _item;
+
+  @override
+  void initState() {
+    super.initState();
+    _item = widget.item;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_circle_left_sharp,
-            size: 40,
-            weight: 400,
-          ),
-          onPressed: () => Navigator.pop(
-              context, (const HomeScreen())), // Navigate back to home screen
-        ),
+        automaticallyImplyLeading: true,
         backgroundColor: secondaryColor,
         title: const Text(
           "Details View",
@@ -30,6 +37,7 @@ class DetailScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
             fontSize: 30,
             color: textColor,
+            fontFamily: "Merriweather",
           ),
         ),
         centerTitle: true,
@@ -48,15 +56,17 @@ class DetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
                     color: textColor,
+                      fontFamily: "Merriweather",
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               Text(
-                item.title,
+                _item.title,
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w600,
+                   fontFamily: "Rubik",
                 ),
               ),
               const SizedBox(height: 20),
@@ -68,25 +78,62 @@ class DetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
                     color: textColor,
+                    fontFamily: "Merriweather",
+                    
                   ),
                 ),
               ),
               const SizedBox(height: 10),
               Text(
-                item.description,
+                _item.description,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w300,
+                   fontFamily: "Rubik",
                 ),
               ),
               Lottie.asset(
                 "assest/images/details_view.json",
                 height: 450,
-              ), // Add animation image from lottie package
+              ),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: const BottomAppBar(
+        elevation: 5,
+        color: secondaryColor,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8.0,
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: secondaryColor,
+        onPressed: () async {
+          // Navigate to the UpdateItemScreen and wait for result
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UpdateItemScreen(item: _item),
+            ),
+          );
+          if (result == true) {
+            setState(() {
+              // replace the item with updated values
+              _item = Provider.of<ItemProvider>(context, listen: false)
+                  .items
+                  .firstWhere((item) => item.id == _item.id);
+            });
+          }
+        },
+        shape: const CircleBorder(),
+        child: const Icon(
+          Icons.edit,
+          size: 50,
+          color: textColor,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      resizeToAvoidBottomInset: false,
     );
   }
 }
