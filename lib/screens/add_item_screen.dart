@@ -31,7 +31,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
-            color: textColor,
+            color: textColor1,
             fontFamily: "Merriweather",
           ),
         ),
@@ -108,7 +108,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   child: const Text(
                     'Add Item',
                     style: TextStyle(
-                        color: textColor,
+                        color: textColor1,
                         fontSize: 20,
                         fontWeight: FontWeight.w400),
                   ),
@@ -136,7 +136,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
         child: const Icon(
           Icons.home,
           size: 50,
-          color: textColor,
+          color: textColor1,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

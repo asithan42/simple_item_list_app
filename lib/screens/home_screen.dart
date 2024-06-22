@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
-            color: textColor,
+            color: textColor1,
             fontFamily:"Merriweather",
           ),
         ),
@@ -40,33 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: const Padding(
               padding: EdgeInsets.only(left: 20),
-              child: Icon(Icons.menu,size: 30,),
+              child: Icon(Icons.menu,size: 30,color: textColor1,),
             )
             ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60.0),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search Items',
-                prefixIcon: const Icon(Icons.search, color: textColor),
-                filled: true,
-                fillColor: backgroundColor,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value.toLowerCase();
-                });
-              },
-            ),
-          ),
-        ),
-        actions: [
+
+             actions: [
           Row(
             children: [
               Padding(
@@ -89,6 +67,33 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ],
+
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60.0),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search Items',
+                hintStyle: const TextStyle(color:textColor1),
+                prefixIcon: const Icon(Icons.search, color: textColor1),
+                filled: true,
+                fillColor: backgroundColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              style: const TextStyle(color: textColor1),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.toLowerCase();
+                });
+              },
+            ),
+          ),
+        ),
+       
       ),
       body: Consumer<ItemProvider>(
          // This widget listens to changes in the ItemProvider and rebuilds when data changes
@@ -119,12 +124,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
-                        color: textColor,
+                        color: textColor2,
                         fontFamily: "Rubik",
                       ),
                     ),
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: textColor),
+                      icon: const Icon(Icons.delete, color: textColor2),
                       onPressed: () {
                         _showDeleteConfirmationDialog(context, itemProvider,
                             item); // Show delete confirmation method call.
@@ -159,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(
                   Icons.home,
                   size: 40,
-                  color: textColor,
+                  color: textColor1,
                 ),
                 onPressed: () {
                   // Navigate to HomeScreen
@@ -170,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(
                 Icons.person,
                 size: 40,
-                color: textColor,
+                color: textColor1,
               ),
               onPressed: () {
                 Navigator.push(
@@ -198,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(
           Icons.add,
           size: 50,
-          color: textColor,
+          color: textColor1,
           
         ),
       ),

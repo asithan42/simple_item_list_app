@@ -31,12 +31,15 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: secondaryColor,
+        iconTheme: const IconThemeData(
+          color: textColor1,
+        ),
         title: const Text(
           "Details View",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
-            color: textColor,
+            color: textColor1,
             fontFamily: "Merriweather",
           ),
         ),
@@ -55,8 +58,8 @@ class _DetailScreenState extends State<DetailScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
-                    color: textColor,
-                      fontFamily: "Merriweather",
+                    color: textColor2,
+                    fontFamily: "Merriweather",
                   ),
                 ),
               ),
@@ -66,7 +69,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w600,
-                   fontFamily: "Rubik",
+                  fontFamily: "Rubik",
                 ),
               ),
               const SizedBox(height: 20),
@@ -77,9 +80,8 @@ class _DetailScreenState extends State<DetailScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
-                    color: textColor,
+                    color: textColor2,
                     fontFamily: "Merriweather",
-                    
                   ),
                 ),
               ),
@@ -89,7 +91,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w300,
-                   fontFamily: "Rubik",
+                  fontFamily: "Rubik",
                 ),
               ),
               Lottie.asset(
@@ -129,7 +131,7 @@ class _DetailScreenState extends State<DetailScreen> {
         child: const Icon(
           Icons.edit,
           size: 50,
-          color: textColor,
+          color: textColor1,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

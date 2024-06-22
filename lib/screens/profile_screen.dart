@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
-            color: textColor,
+            color: textColor1,
             fontFamily: "Merriweather",
           ),
         ),
@@ -27,8 +27,9 @@ class ProfileScreen extends StatelessWidget {
               icon: const Padding(
                 padding: EdgeInsets.only(right: 10, bottom: 10),
                 child: Icon(
-                  Icons.account_circle_sharp,
+                  Icons.edit,
                   size: 40,
+                  color: textColor1,
                 ),
               )),
         ],
@@ -47,20 +48,30 @@ class ProfileScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                  fontFamily: "Rubik",
+                fontFamily: "Rubik",
               ),
             ),
             const SizedBox(height: 10),
             const Text(
               'asithan42@gmail.com',
-              style: TextStyle(fontSize: 18,  fontFamily: "Rubik",),
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: "Rubik",
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 //  login page code.
               },
-              child: const Text('Logout',style: TextStyle(fontFamily: "Rubik",fontSize: 20),  ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: secondaryColor,
+              ),
+              child: const Text(
+                'Logout',
+                style: TextStyle(
+                    fontFamily: "Rubik", fontSize: 20, color: textColor1),
+              ),
             ),
           ],
         ),
@@ -78,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
         child: const Icon(
           Icons.home,
           size: 50,
-          color: textColor,
+          color: textColor1,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

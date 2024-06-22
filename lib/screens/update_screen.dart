@@ -34,12 +34,15 @@ class _UpdateItemScreenState extends State<UpdateItemScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: secondaryColor,
+        iconTheme: const IconThemeData(
+          color: textColor1,
+        ),
         title: const Text(
           'UPDATE ITEM',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
-            color: textColor,
+            color: textColor1,
             fontFamily: "Merriweather",
           ),
         ),
@@ -115,7 +118,7 @@ class _UpdateItemScreenState extends State<UpdateItemScreen> {
                   child: const Text(
                     'Update',
                     style: TextStyle(
-                        color: textColor,
+                        color: textColor1,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
